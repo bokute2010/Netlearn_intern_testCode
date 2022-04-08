@@ -9,6 +9,22 @@ import { Loading } from './Loading';
 
 function Main() {
 
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return null;
+    }
+    const cookie = getCookie('userVoted');
+
 
     const [joke, setJoke] = useState();
     const [number, setNumber] = useState(0);
@@ -20,21 +36,17 @@ function Main() {
     })
 
     function handleStoryChange(newStoryNum, like, jokeId) {
-        //console.log(newStoryNum)
-        setReaction({ like: like, jokeId: jokeId })
+        if (!cookie) {
+            setReaction({ like: like, jokeId: jokeId });
+            if (newStoryNum >= totalStories) {
+                document.cookie = "userVoted=1234";
+            }
+        }
+
         if (number <= totalStories) {
             setNumber(newStoryNum)
         }
     }
-
-    // useEffect(() => {
-    //     console.log(reaction)
-    //     async function postReaction() {
-    //         await axios.put(baseURL, reaction)
-    //     }
-    //     postReaction()
-
-    // }, [reaction])
 
     useEffect(() => {
         async function fetchJokeStories() {
@@ -43,22 +55,22 @@ function Main() {
                 .then(data => {
                     setJoke(data.story)
                     setNumber(number)
-
                     setTotalStories(data.totalStories)
                 })
         }
         fetchJokeStories();
+
 
         async function postReaction() {
             await axios.put(baseURL, reaction)
         }
         postReaction()
 
+
     }, [number])
 
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen)
-
 
     const [newJoke, setNewJoke] = useState('');
 
@@ -78,11 +90,11 @@ function Main() {
                         return setJoke(response.data)
                     })
             }
-            //console.log(newJoke);
             addJokeFunc()
         }
 
     }, [newJoke])
+
 
 
     return (

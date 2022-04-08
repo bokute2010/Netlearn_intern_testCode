@@ -21,7 +21,6 @@ exports.addJoke = async (req, res) => {
         })
         await newJoke.save();
         await res.json(newJoke)
-
     } catch (error) {
         res.status(500).json(error)
     }
@@ -29,14 +28,11 @@ exports.addJoke = async (req, res) => {
 
 exports.getJoke = async (req, res) => {
     try {
-        console.log(req.query.number)
         const number = + req.query.number || 0;
-        //console.log(number);
         await Joke.find()
             .then(jokes => {
                 return res.json({ story: jokes[number], totalStories: jokes.length })
             })
-
     } catch (error) {
         console.log(error)
     }
