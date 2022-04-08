@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './index.css'
-
 import axios from 'axios';
 import JokeRender from './JokeRender';
-import { Alert, Button, Form, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Alert, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { baseURL } from '../shared/baseUrl';
-import { Loading } from './Loading';
 
 function Main() {
 
+    //#region Analyze Cookie
     function getCookie(cname) {
         var name = cname + "=";
         var ca = document.cookie.split(';');
@@ -24,8 +23,9 @@ function Main() {
         return null;
     }
     const cookie = getCookie('userVoted');
+    //#endregion Analyze cookie
 
-
+    //#region Render Joke and Interact like dislike
     const [joke, setJoke] = useState();
     const [number, setNumber] = useState(0);
     const [totalStories, setTotalStories] = useState();
@@ -60,7 +60,6 @@ function Main() {
         }
         fetchJokeStories();
 
-
         async function postReaction() {
             await axios.put(baseURL, reaction)
         }
@@ -68,7 +67,9 @@ function Main() {
 
 
     }, [number])
+    //#endregion Render Joke and Interact like dislike
 
+    //#region Add new jokes feature
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen)
 
@@ -95,6 +96,7 @@ function Main() {
 
     }, [newJoke])
 
+    //#endregion Add new jokes feature
 
 
     return (
@@ -112,7 +114,7 @@ function Main() {
                 joke={joke}
                 number={number} /> : null}
 
-            {!joke ?
+            {!joke && (number >= totalStories) ?
                 <div className='container text-center'>
                     <Alert color='secondary'>
                         "That's all the jokes for today! Come back another day!"

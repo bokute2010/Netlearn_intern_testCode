@@ -1,18 +1,11 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
-import { Alert, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 function JokeRender({ joke, number, onStoryChange, totalStories }) {
-
     async function handleReaction(nextStoryNum, like, jokeId) {
-
-        //console.log(nextStoryNum, totalStories);
         onStoryChange(nextStoryNum, like, jokeId)
-        // if (nextStoryNum <= totalStories) {
-        //     onStoryChange(nextStoryNum, like, jokeId)
-        // }
     }
 
     return (
@@ -45,7 +38,6 @@ function JokeRender({ joke, number, onStoryChange, totalStories }) {
                 </div>
                 <div className='col-lg-3 col-md-1 col-xs-0' >
                 </div>
-
 
             </div>
         </>
