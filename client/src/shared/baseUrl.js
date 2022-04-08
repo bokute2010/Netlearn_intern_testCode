@@ -1,1 +1,1 @@
-export const baseURL = 'http://localhost:5000/jokes/';
+export const baseURL = 'https://netlearn-jokes.herokuapp.com/jokes';

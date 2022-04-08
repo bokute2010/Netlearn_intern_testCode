@@ -3,17 +3,9 @@ const mongoose = require('mongoose')
 const jokeRoutes = require('./routes/jokeRoute');
 const cors = require('cors');
 const { urlencoded } = require('express');
+const dotenv = require('dotenv');
 
-const connectDB = async () => {
-    try {
-        mongoose.connect('mongodb+srv://funix:funix@cluster0.xox99.mongodb.net/netlearn?retryWrites=true&w=majority');
-        console.log('MongoDB connected');
-    } catch (error) {
-        console.log(error);
-        process.exit(1);
-    }
-}
-connectDB()
+dotenv.config();
 
 const app = express()
 
@@ -28,6 +20,13 @@ app.get('/', (req, res) => {
 
 app.use(jokeRoutes)
 
+const uri = process.env.DATABASE_URL;
+const PORT = process.env.PORT;
 
-
-app.listen(5000, () => console.log('This app is listening on port 5000.'))
+mongoose.connect(uri)
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        })
+    })
+console.log('MongoDB connected');
